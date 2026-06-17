@@ -1,15 +1,23 @@
 # AI Teaching Assistant
 
-An AI-powered teaching assistant designed to help students understand GitHub, version control, and collaborative development workflows.
+An AI-powered educational assistant that helps students learn from instructor-provided content using Retrieval-Augmented Generation (RAG).
 
-## What It Does
+## Features
 
-- Answers student questions using approved course content
-- Generates practice questions
-- Explains technical concepts in beginner-friendly language
-- Creates study guides
-- Encourages learning without completing assignments for students
+- Course-aware question answering
+- Study guide generation
+- Quiz generation
+- Instructor tools
+- Academic integrity guardrails
 
-## Why This Project Matters
+## Technology
 
-This project demonstrates how AI can support education while maintaining academic integrity.
+- Python
+- Streamlit
+- LangChain
+- ChromaDB
+- OpenAI API
+
+## Status
+
+Under Development
