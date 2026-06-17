@@ -2,9 +2,14 @@ import streamlit as st
 
 st.set_page_config(
     page_title="AI Teaching Assistant",
-    # page_icon="🎓",
+    page_icon="🎓",
     layout="wide"
 )
+
+def read_uploaded_file(uploaded_file):
+    file_text = uploaded_file.read().decode("utf-8")
+    return file_text
+
 
 st.title("AI Teaching Assistant")
 st.write("Upload course content, ask questions, and generate learning support materials.")
@@ -35,11 +40,17 @@ st.subheader("Upload Course Material")
 
 uploaded_file = st.file_uploader(
     "Upload a course file",
-    type=["txt", "md", "pdf", "docx"]
+    type=["txt", "md"]
 )
+
+course_text = ""
 
 if uploaded_file:
     st.success(f"Uploaded: {uploaded_file.name}")
+    course_text = read_uploaded_file(uploaded_file)
+
+    with st.expander("Preview Uploaded Content"):
+        st.write(course_text[:2000])
 
 st.subheader("Student Request")
 
@@ -57,7 +68,6 @@ if submit_button:
         st.warning("Please upload course material first.")
     else:
         st.subheader("AI Response")
-        st.info("This is where the AI-generated response will appear.")
 
         st.markdown("### Response Preview")
         st.write(
@@ -68,3 +78,6 @@ if submit_button:
             **Source File:** {uploaded_file.name}
             """
         )
+
+        st.markdown("### Course Content Used")
+        st.write(course_text[:1000])
