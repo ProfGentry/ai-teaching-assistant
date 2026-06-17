@@ -1,15 +1,11 @@
 import streamlit as st
+from document_loader import read_uploaded_file
 
 st.set_page_config(
     page_title="AI Teaching Assistant",
     page_icon="🎓",
     layout="wide"
 )
-
-def read_uploaded_file(uploaded_file):
-    file_text = uploaded_file.read().decode("utf-8")
-    return file_text
-
 
 st.title("AI Teaching Assistant")
 st.write("Upload course content, ask questions, and generate learning support materials.")
@@ -39,15 +35,38 @@ with st.sidebar:
 st.subheader("Upload Course Material")
 
 uploaded_file = st.file_uploader(
-    "Upload a course file",
-    type=["txt", "md"]
+    "Upload course files",
+    type=["txt", "md"],
+    accept_multiple_files=True
 )
 
 course_text = ""
 
 if uploaded_file:
-    st.success(f"Uploaded: {uploaded_file.name}")
-    course_text = read_uploaded_file(uploaded_file)
+    
+    st.subheader("Course Library")
+    
+    # Display uploaded Files
+    for file in uploaded_file:
+        st.success(file.name)
+    
+    #Create the list of Filenames    
+    file_names = [file.name for file in uploaded_file]
+
+    #Let the user select a file to preview
+    selected_filename = st.selectbox(
+        "Select a file to preview",
+        file_names
+    )
+
+    #Get the actual uploaded file object 
+    selected_file = next(
+        file for file in uploaded_file
+        if file.name == selected_filename
+    )
+
+    #Read the file contents
+    course_text = read_uploaded_file(selected_file)
 
     with st.expander("Preview Uploaded Content"):
         st.write(course_text[:2000])
