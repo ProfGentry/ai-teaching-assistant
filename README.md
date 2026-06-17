@@ -1,23 +1,32 @@
 # AI Teaching Assistant
 
-An AI-powered educational assistant that helps students learn from instructor-provided content using Retrieval-Augmented Generation (RAG).
+An AI-powered educational assistant that helps students learn from instructor-provided content.
 
-## Features
+## Current Features
 
-- Course-aware question answering
-- Study guide generation
-- Quiz generation
-- Instructor tools
-- Academic integrity guardrails
+- Multiple file upload
+- Course library display
+- Document preview
+- Streamlit web interface
 
-## Technology
+## Screenshot
+
+![AI Teaching Assistant](docs/screenshots/v0.1-homepage.png)
+
+## Technology Stack
 
 - Python
 - Streamlit
-- LangChain
-- ChromaDB
-- OpenAI API
 
-## Status
+## Current Version
 
-Under Development
+v0.1.0 (Pre-release)
+
+## Roadmap
+
+- Document chunking
+- Vector database integration
+- RAG pipeline
+- AI-powered question answering
+- Quiz generation
+- Study guide generation
