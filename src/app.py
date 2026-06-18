@@ -1,11 +1,18 @@
 import streamlit as st
 from document_loader import read_uploaded_file
+from text_chunker import chunk_text
 
 st.set_page_config(
     page_title="AI Teaching Assistant",
     page_icon="🎓",
     layout="wide"
 )
+
+if "course_doucments" not in st.session_state:
+    st.session_state.course_documents = {}
+    
+if "document_chunks" not in st.session_state:
+    st.session_state.document_chunks = {}
 
 st.title("AI Teaching Assistant")
 st.write("Upload course content, ask questions, and generate learning support materials.")
@@ -40,36 +47,44 @@ uploaded_file = st.file_uploader(
     accept_multiple_files=True
 )
 
-course_text = ""
-
 if uploaded_file:
     
+    for file in uploaded_file:
+        if file.name not in st.session_state.course_documents:
+            file_text = read_uploaded_file(file)
+
+            st.session_state.course_documents[file.name] = file_text
+            st.session_state.document_chunks[file.name] = chunk_text(file_text)
+        
     st.subheader("Course Library")
     
-    # Display uploaded Files
-    for file in uploaded_file:
-        st.success(file.name)
+    for filename in st.session_state.course_documents.keys():
+        st.success(filename)
     
-    #Create the list of Filenames    
-    file_names = [file.name for file in uploaded_file]
-
-    #Let the user select a file to preview
     selected_filename = st.selectbox(
         "Select a file to preview",
-        file_names
+        list(st.session_state.course_documents.keys())
     )
 
-    #Get the actual uploaded file object 
-    selected_file = next(
-        file for file in uploaded_file
-        if file.name == selected_filename
-    )
+    course_text = st.session_state.course_documents[selected_filename]
+    chunks = st.session_state.document_chunks[selected_filename]
 
     #Read the file contents
-    course_text = read_uploaded_file(selected_file)
+    course_text = st.session_state.course_documents[selected_filename]
+    chunks = st.session_state.document_chunks[selected_filename]
 
     with st.expander("Preview Uploaded Content"):
         st.write(course_text[:2000])
+        
+    with st.expander("Preview Content Chunks"):
+        st.write(f"Total chunks created: {len(chunks)}")
+        
+        selected_chunk_index = st.selectbox(
+            "Select a chunk to preview", 
+            range(len(chunks))
+        )
+
+        st.write(chunks[selected_chunk_index])
 
 st.subheader("Student Request")
 
@@ -83,7 +98,7 @@ submit_button = st.button("Generate Response")
 if submit_button:
     if not user_prompt:
         st.warning("Please enter a question or request first.")
-    elif not uploaded_file:
+    elif not st.session_state.course_documents:
         st.warning("Please upload course material first.")
     else:
         st.subheader("AI Response")
