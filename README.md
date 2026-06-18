@@ -8,6 +8,7 @@ An AI-powered educational assistant that helps students learn from instructor-pr
 - Course library display
 - Document preview
 - Streamlit web interface
+- Document chunking
 
 ## Screenshot
 
@@ -20,11 +21,10 @@ An AI-powered educational assistant that helps students learn from instructor-pr
 
 ## Current Version
 
-v0.1.0 (Pre-release)
+v0.2.0 (Pre-release)
 
 ## Roadmap
 
-- Document chunking
 - Vector database integration
 - RAG pipeline
 - AI-powered question answering
