@@ -1,6 +1,7 @@
 import streamlit as st
 from document_loader import read_uploaded_file
 from text_chunker import chunk_text
+from retrieval_engine import search_chunks
 
 st.set_page_config(
     page_title="AI Teaching Assistant",
@@ -103,15 +104,31 @@ if submit_button:
     else:
         st.subheader("AI Response")
 
-        st.markdown("### Response Preview")
-        st.write(
-            f"""
-            **Mode:** {mode}  
-            **Audience Level:** {audience}  
-            **Student Request:** {user_prompt}  
-            **Source File:** {uploaded_file.name}
-            """
+        matching_chunks = search_chunks(
+            user_prompt,
+            st.session_state.document_chunks,
+            top_k=3
         )
 
-        st.markdown("### Course Content Used")
-        st.write(course_text[:1000])
+        if not matching_chunks:
+            st.warning("No matching course content found.")
+        else:
+            st.markdown("### Retrieved Course Content")
+
+            for result in matching_chunks:
+                st.markdown(
+                    f"""
+                    **Source:** {result["filename"]}  
+                    **Chunk:** {result["chunk_index"]}  
+                    **Score:** {result["score"]}
+                    """
+                )
+
+                st.write(result["text"])
+                st.divider()
+
+            st.markdown("### Response Preview")
+
+            st.info(
+                "In the next version, these retrieved chunks will be sent to the AI model to generate a grounded response."
+            )
