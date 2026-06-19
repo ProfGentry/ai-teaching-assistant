@@ -21,7 +21,7 @@ An AI-powered educational assistant that helps students learn from instructor-pr
 
 ## Current Version
 
-v0.2.0 (Pre-release)
+v0.3.0 (Pre-release)
 
 ## Roadmap
 
